@@ -99,3 +99,57 @@ GROUP BY f.Nome_Func;
 
 -- Buscar produtos próximos do vencimento
 SELECT * FROM PRODUTO WHERE Data_Vencimento <= CURRENT_DATE + INTERVAL '30 days';
+
+
+-- Buscas substring
+SELECT *
+FROM MERCADO
+WHERE LOWER(Nome_Merc) LIKE LOWER('%mercado%');
+
+SELECT *
+FROM FUNCIONARIO
+WHERE LOWER(Nome_Func) LIKE LOWER('ana%');
+
+SELECT *
+FROM CLIENTE
+WHERE LOWER(Nome_Client) LIKE LOWER('joão%');
+
+-- Consultas usando ALL
+SELECT Nome_Prod
+FROM PRODUTO p
+WHERE Valor_Prod > ALL (SELECT Valor_Prod FROM PRODUTO WHERE Fornecedor = 'Fornecedor_X');
+
+--Consultas usando ANY
+SELECT Nome_Func
+FROM FUNCIONARIO f
+WHERE Idade_Func > ANY (SELECT Idade_Client FROM CLIENTE);
+
+--Consultas com GROUP BY e Condição no HAVING
+SELECT
+    c.Nome_Client,
+    COUNT(comp.Id_Compra) AS Total_Compras,
+    SUM(comp.Valor_Total) AS Valor_Total_Compras
+FROM
+    CLIENTE c
+JOIN
+    ATENDIMENTO a ON c.Id_Client = a.Id_Client
+JOIN
+    COMPRA comp ON a.Id_Atend = comp.Id_Atend
+GROUP BY
+    c.Nome_Client
+HAVING
+    SUM(comp.Valor_Total) > 2;  -- Somente clientes com valor total maior que 100
+
+-- Consultas com crecente ou decrescente
+
+SELECT
+    Nome_Prod,
+    Valor_Prod
+FROM
+    PRODUTO
+ORDER BY
+    Valor_Prod ASC; -- ou DESC
+
+
+
+

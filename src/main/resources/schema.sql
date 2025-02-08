@@ -47,3 +47,41 @@ CREATE TABLE IF NOT EXISTS COMPRA (
     Ender_Entrega VARCHAR(255)
 );
 
+-- Criação da Tabela de Histórico
+CREATE TABLE IF NOT EXISTS HISTORICO_COMPRA (
+    Id_Historico SERIAL PRIMARY KEY,
+    Id_Compra INT,
+    Valor_Total DECIMAL(10, 2),
+    Forma_Pagam VARCHAR(50),
+    Data_Ocorrencia TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    Operacao VARCHAR(10)  -- 'INSERT', 'UPDATE', ou 'DELETE'
+);
+
+-- Criar Função do Gatilho
+--CREATE OR REPLACE FUNCTION funcao_historico_compra()
+--RETURNS TRIGGER AS $$
+--BEGIN
+--    IF TG_OP = 'INSERT' THEN
+--        INSERT INTO HISTORICO_COMPRA (Id_Compra, Valor_Total, Forma_Pagam, Operacao)
+--        VALUES (NEW.Id_Compra, NEW.Valor_Total, NEW.Forma_Pagam, 'INSERT');
+--        RETURN NEW;
+--
+--    ELSIF TG_OP = 'UPDATE' THEN
+--        INSERT INTO HISTORICO_COMPRA (Id_Compra, Valor_Total, Forma_Pagam, Operacao)
+--        VALUES (NEW.Id_Compra, NEW.Valor_Total, NEW.Forma_Pagam, 'UPDATE');
+--        RETURN NEW;
+--
+--    ELSIF TG_OP = 'DELETE' THEN
+--        INSERT INTO HISTORICO_COMPRA (Id_Compra, Valor_Total, Forma_Pagam, Operacao)
+--        VALUES (OLD.Id_Compra, OLD.Valor_Total, OLD.Forma_Pagam, 'DELETE');
+--        RETURN OLD;
+--    END IF;
+--    RETURN NULL;  -- Garantir que a função sempre retorne algo.
+--END;
+--$$ LANGUAGE plpgsql;
+
+-- Criar Gatilho
+--CREATE TRIGGER trg_historico_compra
+--AFTER INSERT OR UPDATE OR DELETE ON COMPRA
+--FOR EACH ROW
+--EXECUTE FUNCTION funcao_historico_compra();
