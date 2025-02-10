@@ -3,6 +3,7 @@ package com.mercadoapp.mercado_app.services;
 import com.mercadoapp.mercado_app.models.Atendimento;
 import com.mercadoapp.mercado_app.repositories.AtendimentoRepository;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 import java.util.Optional;
 

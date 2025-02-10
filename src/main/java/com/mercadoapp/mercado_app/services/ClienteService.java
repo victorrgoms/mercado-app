@@ -1,8 +1,10 @@
 package com.mercadoapp.mercado_app.services;
 
+import com.mercadoapp.mercado_app.exception.NotFoundException;
 import com.mercadoapp.mercado_app.models.Cliente;
 import com.mercadoapp.mercado_app.repositories.ClienteRepository;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -28,5 +30,16 @@ public class ClienteService {
 
     public void deletar(Long id) {
         clienteRepository.deleteById(id);
+    }
+
+    public Cliente atualizar(Cliente cliente, Long id) {
+        Optional<Cliente> clienteDb = clienteRepository.findById(id);
+        if (clienteDb.isPresent()) {
+            Cliente cliente1 = clienteDb.get();
+            cliente1.setIdadeClient(cliente.getIdadeClient());
+            return clienteRepository.save(cliente1);
+        } else {
+            throw new NotFoundException("Cliente não encontrado!");
+        }
     }
 }
